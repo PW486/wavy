@@ -61,7 +61,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Deployment to Google Cloud
 
-The project is configured for deployment to Google Cloud Compute Engine (GCE) on an `e2-micro` instance in the Korea region (`asia-northeast3`).
+The project is configured for deployment to Google Cloud Compute Engine (GCE) on an `e2-micro` instance in the US West region (`us-west1`).
 
 ### Prerequisites
 - Google Cloud SDK installed.

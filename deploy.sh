@@ -7,8 +7,8 @@ if [ -z "$1" ]; then
 fi
 
 PROJECT_ID=$1
-REGION="asia-northeast3"
-ZONE="asia-northeast3-a"
+REGION="us-west1"
+ZONE="us-west1-a"
 IMAGE_NAME="wavy-app"
 REPO_NAME="wavy-repo"
 INSTANCE_NAME="wavy-instance"
