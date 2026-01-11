@@ -24,7 +24,7 @@ function PostCard({ post }: { post: Post }) {
     <div className="border border-gray-200 rounded-lg p-4 mb-4 bg-white shadow-sm">
       <div className="flex items-center mb-2">
         <p className="font-bold text-gray-900">{post.author.username}</p>
-        <p className="text-gray-500 text-sm ml-2">
+        <p className="text-gray-600 text-sm ml-2">
           - {new Date(post.createdAt).toLocaleString()}
         </p>
       </div>
@@ -41,11 +41,11 @@ function CreatePostForm({ onPostCreated, user }: { onPostCreated: () => void; us
     if (!user) {
         return (
             <div className="mb-6 p-6 bg-blue-50 rounded-lg shadow text-center">
-                <p className="text-gray-700 mb-2">Join the conversation!</p>
-                <Link href="/login" className="text-blue-600 font-semibold hover:underline">Log in</Link>
-                <span className="mx-2">or</span>
-                <Link href="/register" className="text-blue-600 font-semibold hover:underline">Register</Link>
-                <span className="ml-1">to post.</span>
+                <p className="text-gray-800 mb-2 font-medium">Join the conversation!</p>
+                <Link href="/login" className="text-blue-600 font-bold hover:underline">Log in</Link>
+                <span className="mx-2 text-gray-700">or</span>
+                <Link href="/register" className="text-blue-600 font-bold hover:underline">Register</Link>
+                <span className="ml-1 text-gray-700">to post.</span>
             </div>
         );
     }
@@ -84,12 +84,12 @@ function CreatePostForm({ onPostCreated, user }: { onPostCreated: () => void; us
                     placeholder="Type something..."
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="w-full p-3 mb-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                    className="w-full p-3 mb-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none text-gray-900 bg-white"
                     rows={3}
                     maxLength={280}
                 />
                 <div className="flex justify-end items-center">
-                    <span className="text-xs text-gray-400 mr-3">{content.length}/280</span>
+                    <span className="text-xs text-gray-600 mr-3">{content.length}/280</span>
                     <button 
                         type="submit" 
                         disabled={!content.trim() || isSubmitting}
@@ -146,13 +146,13 @@ export default function Timeline() {
 
       <div className="space-y-4">
         {loading ? (
-             <div className="text-center py-10 text-gray-500">Loading posts...</div>
+             <div className="text-center py-10 text-gray-700">Loading posts...</div>
         ) : posts.length > 0 ? (
           posts.map((post) => <PostCard key={post.id} post={post} />)
         ) : (
           <div className="text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-              <p className="text-gray-500">No posts yet.</p>
-              <p className="text-gray-400 text-sm mt-1">Be the first to share your thoughts!</p>
+              <p className="text-gray-700">No posts yet.</p>
+              <p className="text-gray-600 text-sm mt-1">Be the first to share your thoughts!</p>
           </div>
         )}
       </div>
