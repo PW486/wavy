@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { LogOut, User as UserIcon, MessageSquare, Bell, Search } from 'lucide-react';
 
 export default function Header() {
   const [user, setUser] = useState<{ id: number; username: string } | null>(null);
@@ -18,42 +19,70 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
     setUser(null);
-    router.refresh(); // Refresh current route
-    // window.location.reload(); // Hard reload to ensure all states are reset if needed
+    router.refresh();
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-10">
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-gray-800 hover:text-gray-600">
-          Micro-SNS
-        </Link>
-        <div className="flex items-center gap-4">
+    <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+      <nav className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="bg-indigo-600 p-2 rounded-xl group-hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">
+              <MessageSquare className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 tracking-tight">
+              MicroSNS
+            </span>
+          </Link>
+
+          <div className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white transition-all">
+            <Search className="w-4 h-4 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search posts..." 
+              className="bg-transparent border-none focus:ring-0 text-sm ml-2 w-full text-gray-900"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 md:gap-4">
           {user ? (
             <>
-              <span className="text-gray-700 font-medium">@{user.username}</span>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
-              >
-                Logout
+              <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-full relative">
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full border-2 border-white"></span>
               </button>
+              <div className="flex items-center gap-3 pl-2 ml-2 border-l border-gray-100">
+                <div className="flex flex-col items-end hidden sm:flex">
+                  <span className="text-sm font-bold text-gray-900">@{user.username}</span>
+                </div>
+                <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                  <UserIcon className="w-5 h-5 text-indigo-600" />
+                </div>
+                <button
+                  onClick={handleLogout}
+                  title="Logout"
+                  className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
             </>
           ) : (
-            <>
+            <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
+                className="px-5 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
               >
-                Login
+                Sign In
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 font-medium"
+                className="px-5 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 font-bold text-sm shadow-md shadow-indigo-100 transition-all active:scale-95"
               >
-                Register
+                Join Now
               </Link>
-            </>
+            </div>
           )}
         </div>
       </nav>

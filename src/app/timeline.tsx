@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Heart, MessageCircle, Share2, MoreHorizontal, User as UserIcon, Send, Sparkles } from 'lucide-react';
 
 // Define the types for our data
 interface Post {
@@ -20,15 +21,59 @@ interface User {
 
 // PostCard component to display a single post
 function PostCard({ post }: { post: Post }) {
+  const timeAgo = (date: string) => {
+    const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+    if (seconds < 60) return `${seconds}s ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    return new Date(date).toLocaleDateString();
+  };
+
   return (
-    <div className="border border-gray-200 rounded-lg p-4 mb-4 bg-white shadow-sm">
-      <div className="flex items-center mb-2">
-        <p className="font-bold text-gray-900">{post.author.username}</p>
-        <p className="text-gray-600 text-sm ml-2">
-          - {new Date(post.createdAt).toLocaleString()}
-        </p>
+    <div className="bg-white rounded-2xl p-5 mb-4 border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+      <div className="flex gap-4">
+        <div className="flex-shrink-0">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-2xl flex items-center justify-center text-white shadow-inner">
+            <UserIcon className="w-6 h-6" />
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-gray-900 text-lg">@{post.author.username}</span>
+              <span className="text-gray-400 text-sm">• {timeAgo(post.createdAt)}</span>
+            </div>
+            <button className="text-gray-400 hover:text-gray-600 p-1">
+              <MoreHorizontal className="w-5 h-5" />
+            </button>
+          </div>
+          <p className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap mb-4">
+            {post.content}
+          </p>
+          <div className="flex items-center justify-between pt-1 border-t border-gray-50 mt-2">
+            <button className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors group/btn">
+              <div className="p-2 rounded-full group-hover/btn:bg-red-50">
+                <Heart className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium">Like</span>
+            </button>
+            <button className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition-colors group/btn">
+              <div className="p-2 rounded-full group-hover/btn:bg-blue-50">
+                <MessageCircle className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium">Reply</span>
+            </button>
+            <button className="flex items-center gap-2 text-gray-500 hover:text-indigo-500 transition-colors group/btn">
+              <div className="p-2 rounded-full group-hover/btn:bg-indigo-50">
+                <Share2 className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium">Share</span>
+            </button>
+          </div>
+        </div>
       </div>
-      <p className="text-gray-800 whitespace-pre-wrap">{post.content}</p>
     </div>
   );
 }
@@ -40,12 +85,16 @@ function CreatePostForm({ onPostCreated, user }: { onPostCreated: () => void; us
 
     if (!user) {
         return (
-            <div className="mb-6 p-6 bg-blue-50 rounded-lg shadow text-center">
-                <p className="text-gray-800 mb-2 font-medium">Join the conversation!</p>
-                <Link href="/login" className="text-blue-600 font-bold hover:underline">Log in</Link>
-                <span className="mx-2 text-gray-700">or</span>
-                <Link href="/register" className="text-blue-600 font-bold hover:underline">Register</Link>
-                <span className="ml-1 text-gray-700">to post.</span>
+            <div className="mb-8 p-8 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl shadow-xl text-center text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                    <Sparkles className="w-24 h-24" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Ready to share your story?</h3>
+                <p className="text-indigo-100 mb-6 max-w-sm mx-auto">Join thousands of people sharing their thoughts every day on MicroSNS.</p>
+                <div className="flex gap-4 justify-center">
+                    <Link href="/login" className="px-6 py-2.5 bg-white text-indigo-600 rounded-full font-bold hover:bg-indigo-50 transition-all shadow-lg">Log in</Link>
+                    <Link href="/register" className="px-6 py-2.5 bg-indigo-500 text-white rounded-full font-bold hover:bg-indigo-400 border border-indigo-400/30 transition-all">Create Account</Link>
+                </div>
             </div>
         );
     }
@@ -77,32 +126,49 @@ function CreatePostForm({ onPostCreated, user }: { onPostCreated: () => void; us
     };
 
     return (
-        <div className="mb-6 p-4 bg-white rounded-lg shadow-md border border-gray-100">
-            <h2 className="text-lg font-semibold mb-3 text-gray-800">What's on your mind?</h2>
-            <form onSubmit={handleSubmit}>
-                <textarea
-                    placeholder="Type something..."
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    className="w-full p-3 mb-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none text-gray-900 bg-white"
-                    rows={3}
-                    maxLength={280}
-                />
-                <div className="flex justify-end items-center">
-                    <span className="text-xs text-gray-600 mr-3">{content.length}/280</span>
-                    <button 
-                        type="submit" 
-                        disabled={!content.trim() || isSubmitting}
-                        className={`px-6 py-2 rounded-full font-bold text-white transition-colors ${
-                            !content.trim() || isSubmitting 
-                            ? 'bg-blue-300 cursor-not-allowed' 
-                            : 'bg-blue-500 hover:bg-blue-600 shadow-md'
-                        }`}
-                    >
-                        {isSubmitting ? 'Posting...' : 'Post'}
-                    </button>
+        <div className="mb-8 p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div className="flex gap-4">
+                <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <UserIcon className="w-5 h-5 text-indigo-600" />
+                    </div>
                 </div>
-            </form>
+                <div className="flex-1">
+                    <form onSubmit={handleSubmit}>
+                        <textarea
+                            placeholder="What's happening?"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            className="w-full p-0 py-2 border-none focus:ring-0 text-xl text-gray-900 placeholder-gray-400 resize-none min-h-[100px] outline-none"
+                            maxLength={280}
+                        />
+                        <div className="flex justify-between items-center pt-4 border-t border-gray-50">
+                            <div className="flex gap-2">
+                                <button type="button" className="p-2 text-indigo-500 hover:bg-indigo-50 rounded-full transition-colors">
+                                    <Sparkles className="w-5 h-5" />
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <span className={`text-sm font-medium ${content.length > 250 ? 'text-red-500' : 'text-gray-400'}`}>
+                                    {content.length}/280
+                                </span>
+                                <button 
+                                    type="submit" 
+                                    disabled={!content.trim() || isSubmitting}
+                                    className={`flex items-center gap-2 px-6 py-2 rounded-full font-bold text-white transition-all shadow-md active:scale-95 ${
+                                        !content.trim() || isSubmitting 
+                                        ? 'bg-gray-200 cursor-not-allowed shadow-none' 
+                                        : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-100'
+                                    }`}
+                                >
+                                    <Send className="w-4 h-4" />
+                                    <span>{isSubmitting ? 'Posting...' : 'Post'}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 }
@@ -137,22 +203,29 @@ export default function Timeline() {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-xl mx-auto">
       <CreatePostForm onPostCreated={fetchPosts} user={user} />
       
-      <div className="border-b border-gray-200 mb-6 pb-2">
-          <h1 className="text-xl font-bold text-gray-800">Latest Posts</h1>
+      <div className="flex items-center justify-between mb-6">
+          <h1 className="text-xl font-black text-gray-900 tracking-tight">Latest Feed</h1>
+          <div className="h-1 flex-1 bg-gray-100 ml-4 rounded-full"></div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {loading ? (
-             <div className="text-center py-10 text-gray-700">Loading posts...</div>
+             <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                 <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                 <p className="text-gray-500 font-medium">Discovering latest posts...</p>
+             </div>
         ) : posts.length > 0 ? (
           posts.map((post) => <PostCard key={post.id} post={post} />)
         ) : (
-          <div className="text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-              <p className="text-gray-700">No posts yet.</p>
-              <p className="text-gray-600 text-sm mt-1">Be the first to share your thoughts!</p>
+          <div className="text-center py-16 px-4 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+              <div className="bg-white w-16 h-16 rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4">
+                  <MessageCircle className="w-8 h-8 text-gray-300" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-1">Silence is golden... but posting is better!</h3>
+              <p className="text-gray-500 text-sm mb-6">Be the very first one to spark a conversation here.</p>
           </div>
         )}
       </div>
