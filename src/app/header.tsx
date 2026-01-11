@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, User as UserIcon, MessageSquare, Bell, Search } from 'lucide-react';
+import { LogOut, User as UserIcon, Waves, Bell, Search } from 'lucide-react';
 
 export default function Header() {
   const [user, setUser] = useState<{ id: number; username: string } | null>(null);
@@ -27,11 +27,11 @@ export default function Header() {
       <nav className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-indigo-600 p-2 rounded-xl group-hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">
-              <MessageSquare className="w-6 h-6 text-white" />
+            <div className="bg-cyan-500 p-2 rounded-xl group-hover:bg-cyan-600 transition-colors shadow-lg shadow-cyan-100">
+              <Waves className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 tracking-tight">
-              MicroSNS
+            <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-600 tracking-tight">
+              Wavy
             </span>
           </Link>
 

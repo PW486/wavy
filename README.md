@@ -1,12 +1,12 @@
-# Micro-SNS
+# Wavy
 
-A simple, text-based social networking service built with Next.js, Prisma, and SQLite.
+A simple, text-based social networking service where thoughts flow like waves. Built with Next.js, Prisma, and SQLite.
 
 ## Features
 - **User Authentication**: Register and Login functionality.
-- **Timeline**: View posts from all users in chronological order.
-- **Posting**: Authenticated users can create text-based posts.
-- **Responsive Design**: Clean interface built with Tailwind CSS.
+- **Recent Waves**: View posts from all users in chronological order.
+- **Posting**: Authenticated users can create text-based waves.
+- **Responsive Design**: Clean, modern interface built with Tailwind CSS and Lucide icons.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Follow these steps to set up and run the project in a new environment.
 
 ```bash
 git clone <repository-url>
-cd micro-sns
+cd wavy
 ```
 
 ### 2. Install Dependencies

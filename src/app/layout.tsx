@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Micro-SNS",
-  description: "A simple text-based SNS",
+  title: "Wavy",
+  description: "A simple text-based SNS where thoughts flow.",
 };
 
 export default function RootLayout({
