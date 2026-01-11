@@ -72,13 +72,13 @@ export default function Header() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-5 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
+                className="px-5 py-2 text-sm font-semibold text-gray-500 hover:text-cyan-600 transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/register"
-                className="px-5 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 font-bold text-sm shadow-md shadow-indigo-100 transition-all active:scale-95"
+                className="px-5 py-2 bg-cyan-500 text-white rounded-full hover:bg-cyan-600 font-bold text-sm shadow-lg shadow-cyan-100 transition-all active:scale-95"
               >
                 Join Now
               </Link>
