@@ -59,11 +59,40 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Deployment to Google Cloud
+
+The project is configured for deployment to Google Cloud Compute Engine (GCE) on an `e2-micro` instance in the Korea region (`asia-northeast3`).
+
+### Prerequisites
+- Google Cloud SDK installed.
+- Docker installed.
+- A Google Cloud Project.
+
+### Steps
+1. **Login to Google Cloud**:
+   ```bash
+   gcloud auth login
+   ```
+
+2. **Run Deployment Script**:
+   ```bash
+   ./deploy.sh <YOUR_PROJECT_ID>
+   ```
+
+This script will:
+- Enable necessary APIs.
+- Build and push the Docker image to Artifact Registry using Cloud Build.
+- Create/update a GCE instance with the container.
+- Setup persistent storage for the SQLite database.
+- Configure firewall rules for port 80.
+
 ## Project Structure
 
 - `src/app`: Application source code (Pages, API routes).
 - `src/lib/prisma.ts`: Prisma client instance.
 - `prisma/schema.prisma`: Database schema definition.
+- `deploy.sh`: Automated deployment script for GCP.
+- `Dockerfile`: Container definition for production.
 
 ## Tech Stack
 

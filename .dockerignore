@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+build
+.git
+*.db
+*.db-journal
+.DS_Store
+.env
+Dockerfile
+deploy.sh

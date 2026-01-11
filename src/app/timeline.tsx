@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Heart, MessageCircle, Share2, MoreHorizontal, User as UserIcon, Send, Sparkles } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MoreHorizontal, User as UserIcon, Send, Sparkles, Waves } from 'lucide-react';
 
 // Define the types for our data
 interface Post {
