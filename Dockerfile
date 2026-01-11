@@ -26,6 +26,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV DATABASE_URL="file:/app/db/dev.db"
+ENV PORT 80
+ENV HOSTNAME 0.0.0.0
 
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
@@ -40,8 +42,11 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 
 # Expose the port
-ENV PORT 80
 EXPOSE 80
 
 # Start the application
-CMD npx prisma db push && npm start
+CMD echo "Starting Wavy..." && \
+    mkdir -p /app/db && \
+    npx prisma db push && \
+    echo "Database ready, starting Next.js on port 80..." && \
+    npx next start -p 80 -H 0.0.0.0

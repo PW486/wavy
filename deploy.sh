@@ -32,21 +32,36 @@ echo "Building and pushing Docker image..."
 # Use Google Cloud Build to avoid local resources
 gcloud builds submit --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME .
 
-echo "Creating GCE instance with container..."
+echo "Creating/Updating GCE instance..."
 gcloud compute instances create-with-container $INSTANCE_NAME \
     --container-image $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME \
     --machine-type e2-micro \
     --zone $ZONE \
     --tags http-server \
     --labels app=wavy \
-    --container-mount-host-path=mount-path=/app/db,host-path=/var/lib/wavy,mode=rw
+    --container-mount-host-path=mount-path=/app/db,host-path=/tmp/wavy-db,mode=rw \
+    --boot-disk-size=10GB \
+    --boot-disk-type=pd-standard \
+    --restart-on-failure || \
+gcloud compute instances update-container $INSTANCE_NAME \
+    --container-image $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME \
+    --zone $ZONE
 
-echo "Setting up firewall rule for port 80..."
-gcloud compute firewall-rules create allow-http-80 \
+echo "Ensuring firewall rule 'allow-http' exists..."
+gcloud compute firewall-rules create default-allow-http-80 \
     --allow tcp:80 \
+    --source-ranges 0.0.0.0/0 \
     --target-tags http-server \
-    --description="Allow port 80 for Wavy app" || echo "Firewall rule already exists"
+    --description="Allow HTTP port 80" || echo "Firewall rule already exists."
 
-echo "Deployment complete!"
-echo "You can access the app at http://<INSTANCE_IP>"
-echo "To get the IP, run: gcloud compute instances describe $INSTANCE_NAME --zone $ZONE --format='get(networkInterfaces[0].accessConfigs[0].natIP)'"
+echo "Waiting for external IP..."
+sleep 5
+EXTERNAL_IP=$(gcloud compute instances describe $INSTANCE_NAME --zone $ZONE --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+
+echo "--------------------------------------------------------"
+echo "DEPLOYMENT FINISHED!"
+echo "URL: http://$EXTERNAL_IP"
+echo "--------------------------------------------------------"
+echo "If you still cannot access it, run this to see app logs:"
+echo "gcloud compute instances get-serial-port-output $INSTANCE_NAME --zone $ZONE"
+echo "--------------------------------------------------------"
