@@ -26,3 +26,10 @@ model Post {
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
 }
+
+model SummaryCache {
+  id        Int      @id @default(autoincrement())
+  content   String
+  postIds   String   @unique
+  createdAt DateTime @default(now())
+}

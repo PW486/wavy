@@ -2,23 +2,33 @@
 
 This file provides context and guidelines for AI agents working on the Wavy project.
 
-## Tech Stack
-- **Framework:** Next.js 15+ (App Router)
-- **Language:** TypeScript
-- **Database:** Prisma ORM
-- **Styling:** Tailwind CSS
-- **Authentication:** Custom API routes (`/api/auth`)
+## 🧠 AI Features & Gemini Integration
+- **Model:** Currently using `gemini-3-flash-preview` for summaries.
+- **Caching:** AI summaries are stored in the `SummaryCache` table. 
+  - **Logic:** We generate a unique key based on the sorted IDs of the summarized posts.
+  - **Rule:** Always check the cache before calling the Gemini API to reduce latency and costs.
+- **API Key:** Managed via `GEMINI_API_KEY` in `.env`.
 
-## Coding Standards
-- Use **functional components** and **Server Components** by default.
-- Use **TypeScript interfaces** for data structures.
-- Follow the existing project structure in `src/app` for routing.
-- Keep components small and modular.
+## 🎨 Design & Animation Principles
+- **Library:** Use `framer-motion` for all non-trivial transitions.
+- **Style:** 
+  - Use the **Cyan-to-Blue** gradient theme for primary actions and brand elements.
+  - Usernames should use the `bg-clip-text text-transparent` gradient pattern.
+  - Use `AnimatePresence` for entrance/exit animations of lists.
+- **Icons:** Use `lucide-react`.
 
-## Database Guidelines
-- All database interactions should go through `src/lib/prisma.ts`.
-- Run `npx prisma generate` after modifying `schema.prisma`.
+## 🏗 Coding Standards
+- **Framework:** Next.js 16+ (App Router).
+- **Components:** Functional components with TypeScript. Prefer Server Components for data fetching where possible.
+- **Shared UI:** Global components belong in `src/components`. Page-specific components can stay in their route folder.
+- **Database:** All DB interactions via `src/lib/prisma.ts`.
 
-## Development Workflow
-- Follow the established pattern for API routes in `src/app/api`.
-- Ensure new features are reflected in the `Dockerfile` if system-level dependencies are added.
+## 🛠 Database Maintenance
+- After changing `prisma/schema.prisma`:
+  1. Run `npx prisma db push` to sync.
+  2. Run `npx prisma generate` to update the client.
+  3. **Note:** Local dev server may need a restart to recognize new Prisma models.
+
+## 🚀 Deployment Workflow
+- The `deploy.sh` script automates GCP deployment.
+- Ensure any new environment variables are added to the deployment configuration.

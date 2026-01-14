@@ -1,101 +1,62 @@
 # Wavy
 
-A simple, text-based social networking service where thoughts flow like waves. Built with Next.js, Prisma, and SQLite.
+A modern, fluid social networking service where thoughts flow like waves. Built with Next.js, Prisma, SQLite, and powered by Google Gemini AI.
 
-## Features
-- **User Authentication**: Register and Login functionality.
-- **Recent Waves**: View posts from all users in chronological order.
-- **Posting**: Authenticated users can create text-based waves.
-- **Responsive Design**: Clean, modern interface built with Tailwind CSS and Lucide icons.
+## 🌊 Core Features
+- **AI Community Pulse**: Automatically summarizes the latest 5 waves using **Gemini 3 Flash Preview**.
+- **Smart Caching**: AI summaries are cached in the database to minimize API calls and ensure instant loading.
+- **Dynamic Profiles**: Personal user pages (`/[username]`) showing individual post history and join dates.
+- **Fluid UI/UX**:
+  - Smooth staggered animations using **Framer Motion**.
+  - Fancy gradient usernames with hover shimmer effects.
+  - Modern, clean aesthetic with Tailwind CSS 4.0.
+- **User Authentication**: Secure registration and login functionality.
+- **Real-time Feel**: Instant post updates and layout transitions.
 
-## Getting Started
+## 🚀 Getting Started
 
-Follow these steps to set up and run the project in a new environment.
-
-### 1. Clone the Repository
-
+### 1. Clone & Install
 ```bash
 git clone <repository-url>
 cd wavy
-```
-
-### 2. Install Dependencies
-
-Install the required Node.js packages:
-
-```bash
 npm install
 ```
 
-### 3. Configure Environment Variables
-
-Create a `.env` file in the root directory of the project:
-
-```bash
-touch .env
-```
-
-Add the following content to `.env` to configure the SQLite database:
-
+### 2. Configure Environment
+Create a `.env` file:
 ```env
 DATABASE_URL="file:./dev.db"
+GEMINI_API_KEY="your_google_ai_studio_api_key"
 ```
 
-### 4. Initialize the Database
-
-Push the Prisma schema to the database to create the necessary tables:
-
+### 3. Database Setup
 ```bash
 npx prisma db push
+npx prisma generate
 ```
 
-### 5. Run the Application
-
-Start the development server:
-
+### 4. Run
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+## 🛠 Tech Stack
+- **Framework**: Next.js 16 (Turbopack)
+- **AI**: Google Generative AI (Gemini 3 Flash Preview)
+- **Database**: Prisma ORM with SQLite
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Styling**: Tailwind CSS 4.0
 
-## Deployment to Google Cloud
+## ☁️ Deployment
+The project is optimized for **Google Cloud Compute Engine**. Use the provided `deploy.sh` script to automate your deployment pipeline.
 
-The project is configured for deployment to Google Cloud Compute Engine (GCE) on an `e2-micro` instance in the US West region (`us-west1`).
+```bash
+./deploy.sh <YOUR_PROJECT_ID>
+```
 
-### Prerequisites
-- Google Cloud SDK installed.
-- Docker installed.
-- A Google Cloud Project.
-
-### Steps
-1. **Login to Google Cloud**:
-   ```bash
-   gcloud auth login
-   ```
-
-2. **Run Deployment Script**:
-   ```bash
-   ./deploy.sh <YOUR_PROJECT_ID>
-   ```
-
-This script will:
-- Enable necessary APIs.
-- Build and push the Docker image to Artifact Registry using Cloud Build.
-- Create/update a GCE instance with the container.
-- Setup persistent storage for the SQLite database.
-- Configure firewall rules for port 80.
-
-## Project Structure
-
-- `src/app`: Application source code (Pages, API routes).
-- `src/lib/prisma.ts`: Prisma client instance.
-- `prisma/schema.prisma`: Database schema definition.
-- `deploy.sh`: Automated deployment script for GCP.
-- `Dockerfile`: Container definition for production.
-
-## Tech Stack
-
-- **Framework**: Next.js 16
-- **Database**: SQLite (via Prisma ORM)
-- **Styling**: Tailwind CSS
+## 📂 Project Structure
+- `src/app/[username]`: Dynamic profile routes.
+- `src/app/api/posts/summary`: AI summary logic with Prisma caching.
+- `src/components`: Reusable UI components like `PostCard`.
+- `prisma/schema.prisma`: Schema including `User`, `Post`, and `SummaryCache`.

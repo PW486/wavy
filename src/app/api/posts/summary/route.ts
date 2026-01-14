@@ -21,9 +21,21 @@ export async function GET() {
       return NextResponse.json({ summary: "No posts available to summarize." });
     }
 
+    // 2. Create a unique key for these 5 posts (sorted IDs)
+    const postIdsKey = posts.map(p => p.id).sort((a, b) => a - b).join(',');
+
+    // 3. Check cache
+    const cachedSummary = await prisma.summaryCache.findUnique({
+      where: { postIds: postIdsKey }
+    });
+
+    if (cachedSummary) {
+      return NextResponse.json({ summary: cachedSummary.content, cached: true });
+    }
+
     const postsContent = posts.map(p => `@${p.author.username}: ${p.content}`).join('\n');
 
-    // 2. Use Gemini API if key is available
+    // 4. Use Gemini API if key is available
     const apiKey = process.env.GEMINI_API_KEY;
     
     if (apiKey) {
@@ -43,7 +55,15 @@ export async function GET() {
         const response = await result.response;
         const text = response.text();
         
-        return NextResponse.json({ summary: text });
+        // Save to cache before returning
+        await prisma.summaryCache.create({
+          data: {
+            content: text,
+            postIds: postIdsKey
+          }
+        });
+
+        return NextResponse.json({ summary: text, cached: false });
       } catch (aiError) {
         console.error("Gemini API failed, falling back to manual summary:", aiError);
         // Fallthrough to manual summary
