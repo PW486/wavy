@@ -168,6 +168,44 @@ function CreatePostForm({ onPostCreated, user }: { onPostCreated: () => void; us
     );
 }
 
+function AISummary() {
+    const [summary, setSummary] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchSummary = async () => {
+            try {
+                const res = await fetch('/api/posts/summary');
+                if (res.ok) {
+                    const data = await res.json();
+                    setSummary(data.summary);
+                }
+            } catch (error) {
+                console.error("Error fetching summary", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSummary();
+    }, []);
+
+    if (loading) return null;
+    if (!summary) return null;
+
+    return (
+        <div className="mb-8 bg-gradient-to-r from-violet-50 to-purple-50 rounded-2xl p-6 border border-purple-100">
+            <h4 className="text-sm font-bold text-purple-900 flex items-center gap-2 mb-3">
+                <Sparkles className="w-4 h-4 text-purple-600" />
+                Community Pulse
+            </h4>
+            <p className="text-purple-800 text-sm leading-relaxed">
+                {summary}
+            </p>
+        </div>
+    );
+}
+
 
 // Main timeline component
 export default function Timeline() {
@@ -201,6 +239,8 @@ export default function Timeline() {
     <div className="max-w-xl mx-auto">
       <CreatePostForm onPostCreated={fetchPosts} user={user} />
       
+      <AISummary />
+
       <div className="flex items-center justify-between mb-6">
           <h1 className="text-xl font-black text-gray-900 tracking-tight">Recent Waves</h1>
           <div className="h-1 flex-1 bg-gray-100 ml-4 rounded-full"></div>
