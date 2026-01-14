@@ -23,6 +23,9 @@ export default async function ProfilePage({ params }: Props) {
           author: {
             select: { username: true },
           },
+          likes: {
+            select: { userId: true },
+          }
         },
       },
     },
@@ -52,11 +55,11 @@ export default async function ProfilePage({ params }: Props) {
           </Link>
 
           {/* Profile Header */}
-          <div className="bg-white rounded-3xl p-8 mb-8 border border-gray-100 shadow-sm relative overflow-hidden">
+          <div className="bg-white rounded-3xl px-8 py-6 mb-8 border border-gray-100 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
             
             <div className="relative z-10">
-              <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 mb-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 mb-6">
                 <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-3xl flex items-center justify-center text-white shadow-lg">
                   <UserIcon className="w-12 h-12" />
                 </div>
@@ -75,14 +78,6 @@ export default async function ProfilePage({ params }: Props) {
                 <div className="text-center sm:text-left">
                   <div className="text-xl font-black text-gray-900">{user.posts.length}</div>
                   <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Waves</div>
-                </div>
-                <div className="text-center sm:text-left">
-                  <div className="text-xl font-black text-gray-900">0</div>
-                  <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Following</div>
-                </div>
-                <div className="text-center sm:text-left">
-                  <div className="text-xl font-black text-gray-900">0</div>
-                  <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Followers</div>
                 </div>
               </div>
             </div>

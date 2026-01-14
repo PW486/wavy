@@ -14,6 +14,7 @@ interface Post {
   author: {
     username: string;
   };
+  likes: { userId: number }[];
 }
 
 interface User {
@@ -87,8 +88,8 @@ function CreatePostForm({ onPostCreated, user }: { onPostCreated: () => void; us
         >
             <div className="flex gap-4">
                 <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-cyan-50 rounded-full flex items-center justify-center">
-                        <UserIcon className="w-5 h-5 text-cyan-600" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center text-white shadow-inner">
+                        <UserIcon className="w-6 h-6" />
                     </div>
                 </div>
                 <div className="flex-1">
@@ -246,7 +247,7 @@ export default function Timeline() {
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ delay: index * 0.05 }}
                 >
-                    <PostCard post={post} />
+                    <PostCard post={post} currentUserId={user?.id} />
                 </motion.div>
             ))}
           </AnimatePresence>
