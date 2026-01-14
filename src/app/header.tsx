@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, User as UserIcon, Waves, Bell, Search } from 'lucide-react';
+import { LogOut, User as UserIcon, Waves, Search } from 'lucide-react';
 
 export default function Header() {
   const [user, setUser] = useState<{ id: number; username: string } | null>(null);
@@ -48,11 +48,7 @@ export default function Header() {
         <div className="flex items-center gap-2 md:gap-4">
           {user ? (
             <>
-              <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-full relative">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full border-2 border-white"></span>
-              </button>
-              <div className="flex items-center gap-3 pl-2 ml-2 border-l border-gray-100">
+              <div className="flex items-center gap-3">
                 <Link href={`/${user.username}`} className="flex items-center gap-3 group">
                   <div className="flex flex-col items-end hidden sm:flex">
                     <span className="text-sm font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">@{user.username}</span>

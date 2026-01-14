@@ -21,19 +21,19 @@ export async function GET() {
       return NextResponse.json({ summary: "No posts available to summarize." });
     }
 
-    // 2. Create a unique key for these 5 posts (sorted IDs)
-    const postIdsKey = posts.map(p => p.id).sort((a, b) => a - b).join(',');
+    // 2. Simple cache: Use a fixed key and 1-hour expiration
+    const CACHE_KEY = "latest_summary";
+    const ONE_HOUR = 60 * 60 * 1000;
 
-    // 3. Check cache
     const cachedSummary = await prisma.summaryCache.findUnique({
-      where: { postIds: postIdsKey }
+      where: { postIds: CACHE_KEY }
     });
 
-    if (cachedSummary) {
+    if (cachedSummary && (Date.now() - new Date(cachedSummary.createdAt).getTime() < ONE_HOUR)) {
       return NextResponse.json({ summary: cachedSummary.content, cached: true });
     }
 
-    const postsContent = posts.map(p => `@${p.author.username}: ${p.content}`).join('\n');
+    const postsContent = posts.map(p => `@${p.author.username}: ${p.content}`).join('\n---\n');
 
     // 4. Use Gemini API if key is available
     const apiKey = process.env.GEMINI_API_KEY;
@@ -55,11 +55,16 @@ export async function GET() {
         const response = await result.response;
         const text = response.text();
         
-        // Save to cache before returning
-        await prisma.summaryCache.create({
-          data: {
+        // Update cache using upsert to be atomic
+        await prisma.summaryCache.upsert({
+          where: { postIds: CACHE_KEY },
+          update: {
             content: text,
-            postIds: postIdsKey
+            createdAt: new Date() // Reset the 1-hour timer
+          },
+          create: {
+            content: text,
+            postIds: CACHE_KEY
           }
         });
 

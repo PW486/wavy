@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Heart, MessageCircle, Share2, MoreHorizontal, User as UserIcon, Send, Sparkles, Waves } from 'lucide-react';
+import { User as UserIcon, Send, Sparkles, Waves } from 'lucide-react';
 import { PostCard } from '@/components/PostCard';
 import { motion, AnimatePresence } from 'framer-motion';
 

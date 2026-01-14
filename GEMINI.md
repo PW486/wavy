@@ -5,8 +5,8 @@ This file provides context and guidelines for AI agents working on the Wavy proj
 ## 🧠 AI Features & Gemini Integration
 - **Model:** Currently using `gemini-3-flash-preview` for summaries.
 - **Caching:** AI summaries are stored in the `SummaryCache` table. 
-  - **Logic:** We generate a unique key based on the sorted IDs of the summarized posts.
-  - **Rule:** Always check the cache before calling the Gemini API to reduce latency and costs.
+  - **Logic:** We use a fixed key (`latest_summary`) to store the most recent summary.
+  - **Rule:** The summary is updated every 1 hour. If a valid cache exists and is less than 1 hour old, it is returned instead of calling the Gemini API.
 - **API Key:** Managed via `GEMINI_API_KEY` in `.env`.
 
 ## 🎨 Design & Animation Principles

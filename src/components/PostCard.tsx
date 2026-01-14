@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Heart, MessageCircle, Share2, MoreHorizontal, User as UserIcon } from 'lucide-react';
+import { Heart, User as UserIcon } from 'lucide-react';
 
 interface Post {
   id: number;
@@ -42,9 +42,6 @@ export function PostCard({ post }: { post: Post }) {
               </Link>
               <span className="text-gray-400 text-sm font-medium">• {timeAgo(post.createdAt)}</span>
             </div>
-            <button className="text-gray-400 hover:text-gray-600 p-1">
-              <MoreHorizontal className="w-5 h-5" />
-            </button>
           </div>
           <p className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap mb-4">
             {post.content}
@@ -55,18 +52,6 @@ export function PostCard({ post }: { post: Post }) {
                 <Heart className="w-5 h-5" />
               </div>
               <span className="text-sm font-medium">Like</span>
-            </button>
-            <button className="flex items-center gap-1.5 text-gray-500 hover:text-cyan-500 transition-colors group/btn">
-              <div className="p-2 rounded-full group-hover/btn:bg-cyan-50">
-                <MessageCircle className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-medium">Reply</span>
-            </button>
-            <button className="flex items-center gap-1.5 text-gray-500 hover:text-blue-500 transition-colors group/btn">
-              <div className="p-2 rounded-full group-hover/btn:bg-blue-50">
-                <Share2 className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-medium">Share</span>
             </button>
           </div>
         </div>
