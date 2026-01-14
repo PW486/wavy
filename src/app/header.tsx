@@ -53,12 +53,14 @@ export default function Header() {
                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full border-2 border-white"></span>
               </button>
               <div className="flex items-center gap-3 pl-2 ml-2 border-l border-gray-100">
-                <div className="flex flex-col items-end hidden sm:flex">
-                  <span className="text-sm font-bold text-gray-900">@{user.username}</span>
-                </div>
-                <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-                  <UserIcon className="w-5 h-5 text-indigo-600" />
-                </div>
+                <Link href={`/${user.username}`} className="flex items-center gap-3 group">
+                  <div className="flex flex-col items-end hidden sm:flex">
+                    <span className="text-sm font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">@{user.username}</span>
+                  </div>
+                  <div className="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center text-white shadow-sm group-hover:shadow-md transition-all">
+                    <UserIcon className="w-5 h-5" />
+                  </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   title="Logout"
