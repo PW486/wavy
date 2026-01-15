@@ -29,7 +29,6 @@ This file provides context and guidelines for AI agents working on the Wavy proj
 - **Database:** All DB interactions via `src/lib/prisma.ts`.
 
 ## 🛠 Database Maintenance
-- **Development Reset:** A `POST /api/admin/reset` endpoint is available to clear all data (Likes, Posts, Users, Cache) during development.
 - After changing `prisma/schema.prisma`:
   1. Run `npx prisma db push` to sync.
   2. Run `npx prisma generate` to update the client.
