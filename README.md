@@ -2,6 +2,10 @@
 
 A modern, fluid social networking service where thoughts flow like waves. Built with Next.js, Prisma, SQLite, and powered by Google Gemini AI.
 
+<div align="center">
+  <img width="600" src="https://github.com/user-attachments/assets/a1773ab9-e97c-44cb-acd2-cf2ec3137fa2" />
+</div>
+
 ## 🌊 Core Features
 - **Instant Search**: Search for waves by content or author directly from the header.
 - **AI Community Pulse**: Automatically summarizes the latest 5 waves using **Gemini 3 Flash Preview**.
@@ -12,6 +16,7 @@ A modern, fluid social networking service where thoughts flow like waves. Built 
   - Modern, clean aesthetic with Tailwind CSS 4.0.
 - **User Authentication**: Secure registration and login functionality.
 - **Real-time Feel**: Instant post updates and layout transitions.
+
 
 ## 🚀 Getting Started
 
