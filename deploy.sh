@@ -40,11 +40,13 @@ gcloud compute instances create-with-container $INSTANCE_NAME \
     --tags http-server \
     --labels app=wavy \
     --container-mount-host-path=mount-path=/app/db,host-path=/tmp/wavy-db,mode=rw \
+    --container-env-file=.env \
     --boot-disk-size=10GB \
     --boot-disk-type=pd-standard \
     --restart-on-failure || \
 gcloud compute instances update-container $INSTANCE_NAME \
     --container-image $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME \
+    --container-env-file=.env \
     --zone $ZONE
 
 echo "Ensuring firewall rule 'allow-http' exists..."
