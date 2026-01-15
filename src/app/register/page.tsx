@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { UserPlus, User as UserIcon, Lock, ArrowLeft, Waves, CheckCircle2 } from 'lucide-react';
+import { UserPlus, User as UserIcon, Lock, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -29,15 +29,16 @@ export default function RegisterPage() {
 
       if (res.ok) {
         setIsSuccess(true);
-        setMessage(`Welcome aboard, @${username}! Your account has been created.`);
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        setMessage(`Welcome aboard, @${username}! Getting things ready...`);
         setTimeout(() => {
-            router.push('/login');
-        }, 2000);
+            router.push('/');
+        }, 1500);
       } else {
         setMessage(data.error || 'Registration failed');
         setIsSuccess(false);
       }
-    } catch (error) {
+    } catch {
       setMessage('An error occurred during registration.');
       setIsSuccess(false);
     } finally {

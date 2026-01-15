@@ -4,6 +4,7 @@ import Header from '../header';
 import { PostCard } from '@/components/PostCard';
 import { User as UserIcon, Calendar, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -42,7 +43,9 @@ export default async function ProfilePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#F8F9FD] font-sans">
-      <Header />
+      <Suspense fallback={<div className="h-16 bg-white border-b border-gray-100" />}>
+        <Header />
+      </Suspense>
       <main className="container mx-auto px-4 py-10">
         <div className="max-w-xl mx-auto">
           {/* Back Button */}

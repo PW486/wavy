@@ -2,16 +2,25 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { LogOut, User as UserIcon, Waves, Search } from 'lucide-react';
 
 export default function Header() {
   const [user, setUser] = useState<{ id: number; username: string } | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [prevQueryParam, setPrevQueryParam] = useState(searchParams.get('q'));
+
+  if (searchParams.get('q') !== prevQueryParam) {
+    setPrevQueryParam(searchParams.get('q'));
+    setSearchQuery(searchParams.get('q') || '');
+  }
 
   useEffect(() => {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(JSON.parse(storedUser));
     }
   }, []);
@@ -19,7 +28,16 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
     setUser(null);
-    router.refresh();
+    window.location.reload();
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push('/');
+    }
   };
 
   return (
@@ -35,14 +53,16 @@ export default function Header() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white transition-all">
+          <form onSubmit={handleSearch} className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-cyan-500 focus-within:bg-white transition-all">
             <Search className="w-4 h-4 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Search posts..." 
-              className="bg-transparent border-none focus:ring-0 text-sm ml-2 w-full text-gray-900"
+              placeholder="Search waves..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm ml-2 w-full text-gray-900"
             />
-          </div>
+          </form>
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">

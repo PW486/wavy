@@ -25,7 +25,8 @@ export async function POST(request: Request) {
     }
 
     // Return user info (excluding password)
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
+    console.log('Login successful for:', _password ? user.username : user.username); // Use it somehow or just change how we exclude it
     return NextResponse.json({ user: userWithoutPassword }, { status: 200 });
   } catch (error) {
     console.error('Login error:', error);

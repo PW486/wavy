@@ -1,9 +1,18 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.get('q');
+
     const posts = await prisma.post.findMany({
+      where: query ? {
+        OR: [
+          { content: { contains: query } },
+          { author: { username: { contains: query } } },
+        ],
+      } : {},
       orderBy: {
         createdAt: 'desc',
       },

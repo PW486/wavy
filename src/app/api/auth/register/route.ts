@@ -27,7 +27,13 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ message: 'User created successfully', userId: newUser.id }, { status: 201 });
+    // Return user info (excluding password) for immediate login
+    const { password: _password, ...userWithoutPassword } = newUser;
+    console.log('User registered successfully:', _password ? newUser.username : newUser.username); 
+    return NextResponse.json({ 
+      message: 'User created successfully', 
+      user: userWithoutPassword 
+    }, { status: 201 });
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { User as UserIcon, Send, Sparkles, Waves } from 'lucide-react';
 import { PostCard } from '@/components/PostCard';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -70,10 +71,10 @@ function CreatePostForm({ onPostCreated, user }: { onPostCreated: () => void; us
                 setContent('');
                 onPostCreated();
             } else {
-                const error = await res.json();
-                alert(`Failed to create post: ${error.error}`);
+                const errorData = await res.json();
+                alert(`Failed to create post: ${errorData.error}`);
             }
-        } catch (error) {
+        } catch {
             alert('An error occurred while creating the post.');
         } finally {
             setIsSubmitting(false);
@@ -172,16 +173,16 @@ function AISummary() {
             animate={{ opacity: 1, x: 0 }}
             className="mb-8 bg-gradient-to-r from-violet-50 to-purple-50 rounded-2xl p-6 border border-purple-100 shadow-sm"
         >
-            <h4 className="text-sm font-bold text-purple-900 flex items-center gap-2 mb-3">
+            <h4 className="text-base font-bold text-purple-900 flex items-center gap-2 mb-3">
                 <motion.div
                     animate={{ rotate: [0, 15, -15, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
                 >
-                    <Sparkles className="w-4 h-4 text-purple-600" />
+                    <Sparkles className="w-5 h-5 text-purple-600" />
                 </motion.div>
                 Community Pulse
             </h4>
-            <p className="text-purple-800 text-sm leading-relaxed">
+            <p className="text-purple-800 text-base leading-relaxed">
                 {summary}
             </p>
         </motion.div>
@@ -194,10 +195,14 @@ export default function Timeline() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q');
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
+    setLoading(true);
     try {
-      const res = await fetch('/api/posts');
+      const url = query ? `/api/posts?q=${encodeURIComponent(query)}` : '/api/posts';
+      const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
         setPosts(data);
@@ -207,7 +212,7 @@ export default function Timeline() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [query]);
 
   useEffect(() => {
     fetchPosts();
@@ -215,16 +220,18 @@ export default function Timeline() {
     if (storedUser) {
         setUser(JSON.parse(storedUser));
     }
-  }, []);
+  }, [fetchPosts]);
 
   return (
     <div className="max-w-xl mx-auto">
-      <CreatePostForm onPostCreated={fetchPosts} user={user} />
+      {!query && <CreatePostForm onPostCreated={fetchPosts} user={user} />}
       
-      <AISummary />
+      {!query && <AISummary />}
 
       <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-black text-gray-900 tracking-tight">Recent Waves</h1>
+          <h1 className="text-xl font-black text-gray-900 tracking-tight">
+            {query ? `Search results for "${query}"` : 'Recent Waves'}
+          </h1>
           <div className="h-1 flex-1 bg-gray-100 ml-4 rounded-full"></div>
       </div>
 
@@ -261,7 +268,12 @@ export default function Timeline() {
                   <Waves className="w-8 h-8 text-gray-300" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-1">The ocean is calm...</h3>
-              <p className="text-gray-500 text-sm mb-6">Be the first to create a ripple on Wavy.</p>
+              <p className="text-gray-500 text-sm mb-6">{query ? `No results found for "${query}"` : 'Be the first to create a ripple on Wavy.'}</p>
+              {query && (
+                <Link href="/" className="text-cyan-600 font-bold hover:underline">
+                  Clear search
+                </Link>
+              )}
           </motion.div>
         )}
       </motion.div>
