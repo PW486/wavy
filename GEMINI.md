@@ -15,9 +15,14 @@ This file provides context and guidelines for AI agents working on the Wavy proj
   - Use the **Cyan-to-Blue** gradient theme for primary actions and brand elements.
   - Usernames should use the `bg-clip-text text-transparent` gradient pattern.
   - Use `AnimatePresence` for entrance/exit animations of lists.
+  - **Search Bar:** Uses `cyan-500` for focus ring and `focus-within` transitions.
 - **Icons:** Use `lucide-react`.
 
 ## 🏗 Coding Standards
+- **Search Logic:** Implemented via URL query parameter `?q=`. Components using `useSearchParams` MUST be wrapped in `<Suspense />` for Next.js build compatibility.
+- **Authentication:**
+  - Registration automatically logs in the user and redirects to the home feed.
+  - Logout triggers a `window.location.reload()` to ensure full state reset (e.g., showing the landing banner).
 - **Framework:** Next.js 16+ (App Router).
 - **Components:** Functional components with TypeScript. Prefer Server Components for data fetching where possible.
 - **Shared UI:** Global components belong in `src/components`. Page-specific components can stay in their route folder.

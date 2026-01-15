@@ -3,10 +3,10 @@
 A modern, fluid social networking service where thoughts flow like waves. Built with Next.js, Prisma, SQLite, and powered by Google Gemini AI.
 
 ## 🌊 Core Features
+- **Instant Search**: Search for waves by content or author directly from the header.
 - **AI Community Pulse**: Automatically summarizes the latest 5 waves using **Gemini 3 Flash Preview**.
+- **Interactive Waves**: Like your favorite waves with instant feedback.
 - **Smart Caching**: AI summaries are cached in the database to minimize API calls and ensure instant loading.
-- **Dynamic Profiles**: Personal user pages (`/[username]`) showing individual post history and join dates.
-- **Fluid UI/UX**:
   - Smooth staggered animations using **Framer Motion**.
   - Fancy gradient usernames with hover shimmer effects.
   - Modern, clean aesthetic with Tailwind CSS 4.0.
