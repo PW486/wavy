@@ -51,6 +51,12 @@ npm run dev
 ## ☁️ Deployment
 The project is optimized for **Google Cloud Compute Engine**. Use the provided `deploy.sh` script to automate your deployment pipeline.
 
+**Note:** Ensure your local `.env` file contains the correct production values before deploying, as the script uploads it to the server:
+```env
+DATABASE_URL="file:/app/db/dev.db"
+GEMINI_API_KEY="your_production_key"
+```
+
 ```bash
 ./deploy.sh <YOUR_PROJECT_ID>
 ```

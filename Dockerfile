@@ -25,7 +25,6 @@ FROM node:22-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV DATABASE_URL="file:/app/db/dev.db"
 ENV PORT 80
 ENV HOSTNAME 0.0.0.0
 
