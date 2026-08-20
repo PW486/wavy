@@ -1,73 +1,80 @@
 # 🌊 Wavy
 
-A modern, fluid social networking service where thoughts flow like waves. Built with Next.js, Prisma, SQLite, and powered by Google Gemini AI.
+A fluid, minimal social network where thoughts flow like waves.
+
+> Built with Next.js, Prisma, SQLite and Gemini — fast, light, and playful.
 
 <div align="center">
   <img width="700" src="https://github.com/user-attachments/assets/a1773ab9-e97c-44cb-acd2-cf2ec3137fa2" />
 </div>
 
-## 🌊 Core Features
-- **Instant Search**: Search for waves by content or author directly from the header.
-- **AI Community Pulse**: Automatically summarizes the latest 5 waves using **Gemini 3 Flash Preview**.
-- **Interactive Waves**: Like your favorite waves with instant feedback.
-- **Smart Caching**: AI summaries are cached in the database to minimize API calls and ensure instant loading.
-  - Smooth staggered animations using **Framer Motion**.
-  - Fancy gradient usernames with hover shimmer effects.
-  - Modern, clean aesthetic with Tailwind CSS 4.0.
-- **User Authentication**: Secure registration and login functionality.
-- **Real-time Feel**: Instant post updates and layout transitions.
+## Features
 
+- **Instant Search** — search waves by content or author from the header
+- **AI Community Pulse** — summarizes the latest 5 waves with Gemini 3 Flash Preview (cached in DB)
+- **Interactive Waves** — like with instant feedback and smooth Framer Motion animations
+- **Auth** — simple sign up / login
 
-## 🚀 Getting Started
+## Getting Started
 
-### 1. Clone & Install
+**1. Install**
+
 ```bash
 git clone <repository-url>
 cd wavy
 npm install
 ```
 
-### 2. Configure Environment
-Create a `.env` file:
+**2. Configure**
+
+Create `.env`:
+
 ```env
 DATABASE_URL="file:./dev.db"
 GEMINI_API_KEY="your_google_ai_studio_api_key"
 ```
 
-### 3. Database Setup
+**3. Setup DB**
+
 ```bash
 npx prisma db push
 npx prisma generate
 ```
 
-### 4. Run
+**4. Run**
+
 ```bash
 npm run dev
 ```
 
-## 🛠 Tech Stack
-- **Framework**: Next.js 16 (Turbopack)
-- **AI**: Google Generative AI (Gemini 3 Flash Preview)
-- **Database**: Prisma ORM with SQLite
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Styling**: Tailwind CSS 4.0
+## Tech Stack
 
-## ☁️ Deployment
-The project is optimized for **Google Cloud Compute Engine**. Use the provided `deploy.sh` script to automate your deployment pipeline.
+- **Framework:** Next.js 16 (Turbopack)
+- **AI:** Google Generative AI (Gemini 3 Flash Preview)
+- **Database:** Prisma ORM with SQLite
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Styling:** Tailwind CSS 4.0
 
-**Note:** Ensure your local `.env` file contains the correct production values before deploying, as the script uploads it to the server:
-```env
-DATABASE_URL="file:/app/db/dev.db"
-GEMINI_API_KEY="your_production_key"
-```
+## Project Structure
+
+- `src/app/[username]` — dynamic profile routes
+- `src/app/api/posts/summary` — AI summary + caching logic
+- `src/components` — reusable UI (`PostCard` etc.)
+- `prisma/schema.prisma` — `User`, `Post`, `SummaryCache`
+
+## Deployment
+
+Optimized for Google Cloud Compute Engine. Uses `deploy.sh`:
 
 ```bash
+# ensure .env has production values
+# DATABASE_URL="file:/app/db/dev.db"
+
 ./deploy.sh <YOUR_PROJECT_ID>
 ```
 
-## 📂 Project Structure
-- `src/app/[username]`: Dynamic profile routes.
-- `src/app/api/posts/summary`: AI summary logic with Prisma caching.
-- `src/components`: Reusable UI components like `PostCard`.
-- `prisma/schema.prisma`: Schema including `User`, `Post`, and `SummaryCache`.
+## Notes
+
+- Summary is cached to minimize Gemini API calls
+- Requires a valid `GEMINI_API_KEY` from Google AI Studio
